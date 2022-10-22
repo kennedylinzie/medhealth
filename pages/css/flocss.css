@@ -1,0 +1,39 @@
+.bF-button a {
+    padding: .6em 1.5em;
+    letter-spacing: 1px;
+    font-size: 0.8em;
+    border: solid 2px #ff3c41;
+    background-color: #ff3c41;
+    align-content: center;
+}
+
+.bF-button a {
+    padding: .7em 2em;
+    border: solid 2px #ff3c41;
+    letter-spacing:1px;
+    font-size: 0.8em;
+    align-content: center;
+}
+
+.bF-button a:hover {
+    border: solid 2px #ff3c41;
+    background-color: #ff3c41;
+}
+
+.bF-button a {
+    align-content: center;
+    text-decoration: none;
+    padding: .8em 3em;
+    text-align: center;
+    border: solid 2px #ff3c41;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 0.9em;
+    display: inline-block;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -o-border-radius: 24px;
+    -moz-border-radius: 24px;
+    -ms-border-radius: 24px;
+}
