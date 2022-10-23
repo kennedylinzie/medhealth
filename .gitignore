@@ -1,1 +1,7 @@
-/assets
+*.media
+*.assets
+*.pages\bootstrap1
+*.pages\css
+*.pages\css2
+*.pages\js
+*.pages\js2
