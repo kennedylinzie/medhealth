@@ -33,7 +33,7 @@ if(getCookie("full_name")==undefined){
   window.open("sign-in.html", "_self");
 }
 
-console.log(getCookie("full_name"));
+//console.log(getCookie("full_name"));
   function getCookie(cName) {
     const name = cName + "=";
     const cDecoded = decodeURIComponent(document.cookie); //to be careful
@@ -603,7 +603,7 @@ include 'locations_model.php';
             // makes a selection and add a symbol that matches the result.
             geocoder.on('result', function(ev) {
                 alert("aaaaa");
-                console.log(ev.result.center);
+                //console.log(ev.result.center);
 
             });
         });
@@ -630,10 +630,10 @@ include 'locations_model.php';
 
             var geojson = (saved_markers == coordinates ? saved_markers : '');
 
-            console.log(geojson);
+            //console.log(geojson);
             // add markers to map
             geojson.forEach(function (marker) {
-                console.log(marker);
+                //console.log(marker);
                 // make a marker for each feature and add to the map
                 new mapboxgl.Marker()
                     .setLngLat(marker)
@@ -646,7 +646,7 @@ include 'locations_model.php';
             var lngLat = marker.getLngLat();
             document.getElementById("lat").value = lngLat.lat;
             document.getElementById("lng").value = lngLat.lng;
-            console.log('lng: ' + lngLat.lng + '<br />lat: ' + lngLat.lat);
+            //console.log('lng: ' + lngLat.lng + '<br />lat: ' + lngLat.lat);
         }
 
         $('#signupForm').submit(function(event){
@@ -665,7 +665,7 @@ include 'locations_model.php';
             });
         });
 
-        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+        //document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 
     </script>
     </div> 
@@ -1220,6 +1220,84 @@ include 'locations_model.php';
     //     },
     //   },
     // });
+
+
+      $.ajax({
+        url: "http://localhost/MR/v2/Api_ad.php?apicall=pullguardData_",
+        type: "POST",
+        data: {
+          UU_ID: 4,
+        },
+        cache: false,
+        success: function(dataResult_chart){
+          var dataResult_chart = JSON.parse(dataResult_chart);
+          //console.log(dataResult_chart);
+          //console.log(dataResult_chart[0].Prescription);
+          //console.log(dataResult_chart);
+        var pre = JSON.parse(dataResult_chart[0].Prescription);
+         // console.log(pre);
+         // console.log(dataResult_chart);
+          const cars = [];
+             for (let i = 0; i < dataResult_chart.length; i++) {
+
+               var pre_f = JSON.parse(dataResult_chart[i].Prescription);
+              // console.log(pre_f);
+              cars[i]=pre_f
+            //  console.log(cars);
+              
+             }
+
+             async function test() {
+                console.log('start timer');
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                console.log('after 1 second');
+                for (let index = 0; index < 1; index++) {
+                //const element = cars[index].drugName;
+               // console.log(cars);
+                for (let layer0 = 0; layer0 < cars.length; layer0++) {
+                          
+                         // console.log(cars[layer0]);
+                          for (let layer1 = 0; layer1 < cars[layer0].length; layer1++) {
+                           
+                           // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                            console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                            
+                          }
+
+                  
+                }
+                
+              }
+
+              for (let index_fam = 0; index_fam < 1; index_fam++) {
+                //const element = cars[index].drugName;
+               // console.log(cars);
+                for (let layer0_fam = 0; layer0_fam < cars.length; layer0_fam++) {
+                          
+                         // console.log(cars[layer0]);
+                          for (let layer1_fam = 0; layer1_fam < cars[layer0_fam].length; layer1_fam++) {
+                           
+                           // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                            console.log(cars[layer0_fam][layer1_fam].family);
+                            
+                          }
+
+                  
+                }
+                
+              }
+
+
+
+              }
+
+              test();
+
+             
+          
+        }
+      });
+                        
 
 
     var ctx2 = document.getElementById("chart-line").getContext("2d");
