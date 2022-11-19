@@ -35,6 +35,7 @@
   <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.6" rel="stylesheet" />
 </head>
 <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+  
 <script>
 //document.cookie = "full_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
 
@@ -90,7 +91,7 @@ function logout(){
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
+      <a class="navbar-brand m-0" href="#" target="_blank">
         <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold">Med health</span>
       </a>
@@ -343,7 +344,7 @@ function logout(){
                 <table  class="table align-items-center mb-0" id="myTable">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">UU_ID</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">ID</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Verified</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">First name</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Last name</th>
@@ -353,7 +354,7 @@ function logout(){
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Email</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Phone number</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Existing illness</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Location</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Prescription</th>
                      
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Membership number</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Delete</th>
@@ -408,9 +409,9 @@ function logout(){
 
 
 
-
+                           
                                // code to read selected table row cell data (values).
-                               $("#myTable").on('click','.bnDelete',function(){
+                               $("#myTable").on('click','.bnPrep',function(){
                                 // get the current row
                                 var currentRow=$(this).closest("tr"); 
                                 
@@ -420,14 +421,85 @@ function logout(){
                                // var data=col1+"\n"+col2+"\n"+col3;
                                 var data=col1;
                                 
-                                //alert(data);
-                                delete_user(data);
+                               // alert(data);
+                              //  delete_user(data);
+                              pull_prescription(data)
                            });
 
 
 
 
                           });
+
+                          function pull_prescription(id){
+                            $.ajax({
+                              url: "http://localhost/MR/v2/Api_ad.php?apicall=pullguardData_",
+                              type: "POST",
+                              data: {
+                                UU_ID: id,
+                              },
+                              cache: false,
+                              success: function(dataResult){
+                                var dataResult_chart = JSON.parse(dataResult);
+                             ////////////////////
+                             //console.log(dataResult_chart);
+                                      //console.log(dataResult_chart[0].Prescription);
+                                      //console.log(dataResult_chart);
+                                      var pre = JSON.parse(dataResult_chart[0].Prescription);
+                                      // console.log(pre);
+                                      // console.log(dataResult_chart);
+                                      const cars = [];
+                                          for (let i = 0; i < dataResult_chart.length; i++) {
+                            
+                                            var pre_f = JSON.parse(dataResult_chart[i].Prescription);
+                                          // console.log(pre_f);
+                                          cars[i]=pre_f
+                                        //  console.log(cars);
+                                          
+                                          }
+                            
+                                          async function test() {
+                                            console.log('start timer');
+                                            await new Promise(resolve => setTimeout(resolve, 500));
+                                            console.log('after 1 second');
+                                            for (let index = 0; index < 1; index++) {
+                                            //const element = cars[index].drugName;
+                                            // console.log(cars);
+                                            for (let layer0 = 0; layer0 < cars.length; layer0++) {
+                                                      
+                                                      // console.log(cars[layer0]);
+                                                      for (let layer1 = 0; layer1 < cars[layer0].length; layer1++) {
+                                                        
+                                                        // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                                                        console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                                                        
+                                                      }
+                                                    } 
+                                                  }
+                            
+                                          for (let index_fam = 0; index_fam < 1; index_fam++) {
+                                            //const element = cars[index].drugName;
+                                            // console.log(cars);
+                                            for (let layer0_fam = 0; layer0_fam < cars.length; layer0_fam++) {
+                                                      
+                                                      // console.log(cars[layer0]);
+                                                      for (let layer1_fam = 0; layer1_fam < cars[layer0_fam].length; layer1_fam++) {
+                                                        
+                                                        // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                                                        console.log(cars[layer0_fam][layer1_fam].family);
+                                                        
+                                                      }
+                                                    }         
+                                                  }
+                                                }
+                            
+                                          test();
+                             ////////////////////
+                                //console.log(dataResult);
+                               
+                              }
+                            });
+                          }
 
 
                           function delete_user(id){
@@ -505,9 +577,9 @@ function logout(){
                                   //console.log(dataResult);
                                   for (let i = 0; i < dataResult.length; i++) {
 
-                      console.log(dataResult[i].UU_ID+".."+dataResult[i].Weight+".."+dataResult[i].Last_name
-                            +".."+dataResult[i].Age+".."+dataResult[i].Email+".."+dataResult[i].Phone_number
-                            +".."+dataResult[i].Existing_illness+".."+dataResult[i].Location+".."+dataResult[i].Password);
+                      //console.log(dataResult[i].UU_ID+".."+dataResult[i].Weight+".."+dataResult[i].Last_name
+                         //   +".."+dataResult[i].Age+".."+dataResult[i].Email+".."+dataResult[i].Phone_number
+                         //   +".."+dataResult[i].Existing_illness+".."+dataResult[i].Location+".."+dataResult[i].Password);
  
                             if(dataResult[i].Verified==0){
                               var noon = '<td class="bnSelect"><button  w-10 type="button" class="btn bg-gradient-danger">Unverified</button>'; 
@@ -515,7 +587,9 @@ function logout(){
                               var noon = '<td class="bnSelect_unverify"><button w-10 type="button" class="btn bg-gradient-success">Verified</button>';
                             }
                             var delete_acc = '<td class="bnDelete"><button w-10 type="button" class="btn bg-gradient-success" >delete</button>';
-                             
+
+                            var pescription_view = '<td class="bnPrep" ><button w-10 type="button" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >View</button>';
+
                             table += "<tr>";
                               table += "<td>" 
                                 table += '<div class="d-flex px-2 py-1">' 
@@ -527,16 +601,16 @@ function logout(){
 
                                   + dataResult[i].UU_ID +"</td>" 
                                   + noon + "" +'</td>' 
-                                  + "<td>" + dataResult[i].First_name +"</td>" 
-                                  + "<td>" + dataResult[i].Last_name +"</td>" 
-                                  + "<td>" + dataResult[i].Age +"</td>" 
-                                  + "<td>" + dataResult[i].Weight +"</td>" 
-                                  + "<td>" + dataResult[i].Bloodpressure +"</td>" 
-                                  + "<td>" + dataResult[i].Email +"</td>" 
-                                  + "<td>" + dataResult[i].Phone_number +"</td>" 
-                                  + "<td>" + dataResult[i].Existing_illness +"</td>" 
-                                  + "<td>" + dataResult[i].Location +"</td>" 
-                                  + "<td>" + dataResult[i].Membership_number +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].First_name +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Last_name +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Age +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Weight +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Bloodpressure +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Email +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Phone_number +"</td>" 
+                                  + "<td class='text-center'>" + dataResult[i].Existing_illness +"</td>" 
+                                  +         pescription_view+'</td>'  
+                                  + "<td class='text-center'>" + dataResult[i].Membership_number +"</td>" 
                                   +  delete_acc + "" +'</td>' ;
                                 
                               table += "</tr>";
@@ -556,6 +630,170 @@ function logout(){
                     
                  
                 </table>
+
+
+                <!-- Modal the modal that holds the user prescription medication --> 
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+
+                    <div class="modal-content">
+
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-success" onclick="ExportToExcel('xlsx')">EXPORT</button>
+
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel" >Users Prescription</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                       
+
+                      </div>
+                      <div class="modal-body">
+                        
+                      <!-- llllllllllllllll -->
+                      <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0" class="table-responsive p-0 table-wrapper-scroll-y my-custom-scrollbar">
+                          <table  class="table align-items-center mb-0" class="table-wrapper-scroll-y my-custom-scrollbar" id="myTable_fam">
+                            <thead>
+                              <tr>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">id</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">drug Name</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Condition</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Drug Amount</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Date Taken</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Time Taken</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">HasTaken</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">Intake method</th>
+       
+                                <th class="text-secondary opacity-7"></th>
+                              </tr>
+                            </thead>
+                            <tbody id= "result_fam"> </tbody>
+                            <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+                      <script>
+                        var exporter_name;
+                        function pull_prescription(id){
+                          $.ajax({
+                            url: "http://localhost/MR/v2/Api_ad.php?apicall=pullguardData_",
+                            type: "POST",
+                            data: {
+                              UU_ID: id,
+                            },
+                            cache: false,
+                            success: function(dataResult){
+                              var dataResult_chart = JSON.parse(dataResult);
+                              var table_fam = "" ;  
+                           ////////////////////
+                           //console.log(dataResult_chart);
+                                    //console.log(dataResult_chart[0].Prescription);
+                                    //console.log(dataResult_chart);
+                                    var pre = JSON.parse(dataResult_chart[0].Prescription);
+                                    // console.log(pre);
+                                    // console.log(dataResult_chart);
+                                    const cars = [];
+                                        for (let i = 0; i < dataResult_chart.length; i++) {
+                          
+                                          var pre_f = JSON.parse(dataResult_chart[i].Prescription);
+                                        // console.log(pre_f);
+                                        cars[i]=pre_f
+                                      //  console.log(cars);
+                                        
+                                        }
+                          
+                                        async function test() {
+                                          console.log('start timer');
+                                          await new Promise(resolve => setTimeout(resolve, 500));
+                                          console.log('after 1 second');
+                                          for (let index = 0; index < 1; index++) {
+                                          //const element = cars[index].drugName;
+                                          // console.log(cars);
+                                          for (let layer0 = 0; layer0 < cars.length; layer0++) {
+                                                    
+                                                    // console.log(cars[layer0]);
+                                                    for (let layer1 = 0; layer1 < cars[layer0].length; layer1++) {
+                                                      
+                                                      // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                                                      console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                                                      exporter_name = cars[layer0][layer1].firstName;
+                                                      $('#staticBackdropLabel').text(cars[layer0][layer1].firstName+"'s medication schedule");
+                                                      
+                                                    }
+                                                  } 
+                                                }
+                          
+                                        for (let index_fam = 0; index_fam < 1; index_fam++) {
+                                          //const element = cars[index].drugName;
+                                          // console.log(cars);
+                                          for (let layer0_fam = 0; layer0_fam < cars.length; layer0_fam++) {
+                                                    
+                                                    // console.log(cars[layer0]);
+                                                    for (let layer1_fam = 0; layer1_fam < cars[layer0_fam].length; layer1_fam++) {
+                                                      
+                                                      // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+                                            //console.log(cars[layer0_fam][layer1_fam].family[0].Condition+"........");
+                                                      
+                                           
+                                                               
+                                                        for (let layer0_fam1 = 0; layer0_fam1 < cars[layer0_fam][layer1_fam].family.length; layer0_fam1++) {
+                                                          
+                                                    table_fam += "<tr>";
+                                                      table_fam += "<td>" 
+                                                        table_fam += '<div class="d-flex px-2 py-1">' 
+                                                          table_fam += '<div>'   
+                                                            table_fam += '</div>'  
+                                                            table_fam += '<div class="d-flex flex-column justify-content-center">'  
+
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].id +"</td>" 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].medicationName +"</td>" 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].Condition +'</td>' 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].medicationAmount +'</td>' 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].dataTaken +"</td>" 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].timeTaken +"</td>" 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].hasTaken +"</td>" 
+                                                            + "<td class='text-center'>" + cars[layer0_fam][layer1_fam].family[layer0_fam1].intake_method +"</td>";
+                                                          
+                                                            table_fam += "</tr>";
+                                                      }
+
+                                                      document.getElementById("result_fam").innerHTML = table_fam;
+                                                    }
+                                                  }         
+                                                }
+                                              }
+                                             
+                                        test();
+                               
+                              //console.log(dataResult);
+                             
+                            }
+                          });
+                        }
+
+                        function ExportToExcel(type, fn, dl) {
+                          var elt = document.getElementById('myTable_fam');
+                          var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                          return dl ?
+                            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+                            XLSX.writeFile(wb, fn || ( exporter_name+'.'+ (type || 'xlsx')));
+                       }
+
+
+                      </script>
+                   
+                    </table> 
+                      <!-- llllllllllllllll -->
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="ExportToExcel('xlsx')">EXPORT</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- llllllllllllllllll -->
+
               </div>
             </div>
           </div>
@@ -572,12 +810,12 @@ function logout(){
                 <table id="myTable1" class="table align-items-center justify-content-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10">ID</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10">Member name</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10">Member sirname</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10">Memebr ID</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10">National ID</th>
-                      <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-10">Delete</th>
+                      <th class="text-left text-secondary text-xs font-weight-bolder opacity-10">ID</th>
+                      <th class="text-center text-secondary text-xs font-weight-bolder opacity-10">Member name</th>
+                      <th class="text-center text-secondary text-xs font-weight-bolder opacity-10">Member sirname</th>
+                      <th class="text-center text-secondary text-xs font-weight-bolder opacity-10">Memebr ID</th>
+                      <th class="text-center text-secondary text-xs font-weight-bolder opacity-10">National ID</th>
+                      <th class="text-left text-secondary text-xs font-weight-bolder opacity-10">Delete</th>
                     </th>
                     </tr>
                   </thead>
@@ -593,7 +831,6 @@ function logout(){
 
                           $(document).ready(function(){
 
-                           
                                // code to read selected table row cell data (values).
                                $("#myTable1").on('click','.bnmDelete',function(){
                                 // get the current row
@@ -608,6 +845,21 @@ function logout(){
                               //  alert(data);
                                 delete_member(data);
                            });
+
+                           // code to read selected table row cell data (values).
+                           $("#myTable1").on('click','.bnmDelete',function(){
+                            // get the current row
+                            var currentRow=$(this).closest("tr"); 
+                            
+                            var col1=currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+                           // var col2=currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+                            //var col3=currentRow.find("td:eq(2)").text(); // get current row 3rd TD
+                           // var data=col1+"\n"+col2+"\n"+col3;
+                            var data=col1;
+                            
+                          //  alert(data);
+                            delete_member(data);
+                       });
 
 
 
@@ -669,10 +921,10 @@ function logout(){
                                   
 
                                   + dataResult_mem[i].m_uuid +"</td>" 
-                                  + "<td>" + dataResult_mem[i].member_name +"</td>" 
-                                  + "<td>" + dataResult_mem[i].member_last_name +"</td>" 
-                                  + "<td>" + dataResult_mem[i].membership_id +"</td>" 
-                                  + "<td>" + dataResult_mem[i].national_id +"</td>"  
+                                  + "<td class='text-center'>" + dataResult_mem[i].member_name +"</td>" 
+                                  + "<td class='text-center'>" + dataResult_mem[i].member_last_name +"</td>" 
+                                  + "<td class='text-center'>" + dataResult_mem[i].membership_id +"</td>" 
+                                  + "<td class='text-center'>" + dataResult_mem[i].national_id +"</td>"  
                                   +  delete_acc + "" +'</td>' ;
                                 
                               table += "</tr>";
@@ -691,6 +943,56 @@ function logout(){
 
 
                 </table>
+
+                <!-- the modal for medication -->
+                <!-- The Modal -->
+                <div class="modal" id="myModal">
+                  <div class="modal-dialog">
+                  <div class="modal-content">
+                  
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Pay</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body">
+
+                          
+                    <form id="payform"  class="needs-validation" novalidate>
+
+
+                      <div class="form-group">
+                        <label for="cnum">Enter Account number:</label>
+                        <input type="text" class="form-control" id="from_account_number" placeholder="Enter your account number" name="cnum" required>
+                      </div>
+
+
+                      <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" class="form-control" id="from_amount" placeholder="Enter amount" name="amount" required>
+                      
+                      </div>
+                      
+                      <button type="submit" id="submit" class="btn btn-primary">Pay</button>
+                      </form>
+                    </div>
+                  
+                      
+                
+
+
+                  
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                    
+                  </div>
+                  </div>
+                </div>
+                <!-- end of modal -->
               </div>
             </div>
           </div>
