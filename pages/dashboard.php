@@ -43,23 +43,135 @@ if(getCookie("full_name")==undefined){
         if (val.indexOf(name) === 0) res = val.substring(name.length);
     })
     return res;
-}
+  }
 
-function logout(){
-  document.cookie = "full_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-  if(getCookie("full_name")==undefined){
+        function logout(){
+          document.cookie = "full_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+          if(getCookie("full_name")==undefined){
 
-    document.cookie = "pass=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    document.cookie = "full_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    document.cookie = "ad_uuid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            document.cookie = "pass=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            document.cookie = "full_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            document.cookie = "ad_uuid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
 
-  window.open("sign-in.html", "_self");
-}
-}
+          window.open("sign-in.html", "_self");
+        }
+  }
 
 </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- <script type="text/javascript" src="pages/google_chart/test/charts/offlineSaving/loader.js"></script> -->
+    <script type="text/javascript">
+
+    var fad = [['Task', 'Hours per Day']];
+
+    // fad.push(['Study',2]);
+    // fad.push(['Work', 9]);
+    // fad.push(['Eat', 1]);
+    // fad.push(['Commute', 2]);
+    // fad.push(['Sleep', 7]);
+
+
+
+     ///////////////////////////.............
+     $.ajax({
+        url: "http://localhost/MR/v2/Api_ad.php?apicall=pullguardData_all",
+        type: "POST",
+        data: {
+          UU_ID: 7,
+        },
+        cache: false,
+        success: function(dataResult_chart){
+          var dataResult_chart = JSON.parse(dataResult_chart);
+          //console.log(dataResult_chart);
+          //console.log(dataResult_chart[0].Prescription);
+          //console.log(dataResult_chart);
+          var pre = JSON.parse(dataResult_chart[0].Prescription);
+         // console.log(pre);
+         // console.log(dataResult_chart);
+          const cars = [];
+             for (let i = 0; i < dataResult_chart.length; i++) {
+
+               var pre_f = JSON.parse(dataResult_chart[i].Prescription);
+              // console.log(pre_f);
+              cars[i]=pre_f
+            //  console.log(cars);
+              
+             }
+
+             async function test() {
+                console.log('start timer');
+                await new Promise(resolve => setTimeout(resolve, 200));
+                console.log('after 1 second');
+                for (let index = 0; index < 1; index++) {
+                //const element = cars[index].drugName;
+               // console.log(cars);
+                for (let layer0 = 0; layer0 < cars.length; layer0++) {
+                          
+                         // console.log(cars[layer0]);
+                          for (let layer1 = 0; layer1 < cars[layer0].length; layer1++) {
+                           
+                            //console.log(cars[layer0][layer1].family.length);
+                            //console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName+""+cars[layer0][layer1].family.length);
+                            fad.push([cars[layer0][layer1].drugName, cars[layer0][layer1].family.length]);
+                            
+                          }
+
+                  
+                }
+                
+              }
+
+              // for (let index_fam = 0; index_fam < 1; index_fam++) {
+              //   //const element = cars[index].drugName;
+              //  // console.log(cars);
+              //   for (let layer0_fam = 0; layer0_fam < cars.length; layer0_fam++) {
+                          
+              //            // console.log(cars[layer0]);
+              //             for (let layer1_fam = 0; layer1_fam < cars[layer0_fam].length; layer1_fam++) {
+                           
+              //              // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
+              //               console.log(cars[layer0_fam][layer1_fam].family);
+                            
+              //             }
+
+                  
+              //   }
+                
+              // }
+
+
+
+              }
+
+              test();
+
+             
+          
+        }
+      });
+    /////////////////////////................
+
+    //var fad = [['Task', 'Hours per Day'],['Work',     11],['Eat',      2],['Commute',  2],['Watch TV', 2],['Sleep',    7]];
+
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+       // console.log(data);
+        var data = google.visualization.arrayToDataTable(fad);
+       
+        var options = {
+          title: '',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+        console.log(data+"......................");
+      }
+    </script>
 
 
 
@@ -328,7 +440,7 @@ function logout(){
 
 
 
-    <div class="container-fluid py-4">
+    <div class="container-fluid py-3">
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
           <div class="card">
@@ -456,28 +568,7 @@ function logout(){
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6">
-          <div class="card">
-            <div class="card-body p-3">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Emergencies</p>
-                    <h5 class="font-weight-bolder mb-0">
-                        2
-                    
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
-                  <i class="ni ni-circle-08 text-lg opacity-10"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+       
       </div>
      
       <div class="row mt-4">
@@ -686,16 +777,13 @@ include 'locations_model.php';
           <div class="col-lg-7">
           <div class="card z-index-2">
             <div class="card-header pb-0">
-              <h6>Sales overview</h6>
-              <p class="text-sm">
-                <i class="fa fa-arrow-up text-success"></i>
-                <span class="font-weight-bold">4% more</span> in 2021
-              </p>
+              <h6>Medication in the system</h6>
+              
             </div>
             <div class="card-body p-3">
-              <div class="chart">
-                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
-              </div>
+              
+            <div id="donutchart" style="width: 500px; height: 300px;"></div>
+
             </div>
           </div>
         </div>
@@ -703,6 +791,7 @@ include 'locations_model.php';
       </div>
 
 
+      
       
       <footer class="footer pt-3  ">
         <div class="container-fluid">
@@ -795,83 +884,6 @@ include 'locations_model.php';
     //   },
     // });
 
-
-      $.ajax({
-        url: "http://localhost/MR/v2/Api_ad.php?apicall=pullguardData_",
-        type: "POST",
-        data: {
-          UU_ID: 4,
-        },
-        cache: false,
-        success: function(dataResult_chart){
-          var dataResult_chart = JSON.parse(dataResult_chart);
-          //console.log(dataResult_chart);
-          //console.log(dataResult_chart[0].Prescription);
-          //console.log(dataResult_chart);
-          var pre = JSON.parse(dataResult_chart[0].Prescription);
-         // console.log(pre);
-         // console.log(dataResult_chart);
-          const cars = [];
-             for (let i = 0; i < dataResult_chart.length; i++) {
-
-               var pre_f = JSON.parse(dataResult_chart[i].Prescription);
-              // console.log(pre_f);
-              cars[i]=pre_f
-            //  console.log(cars);
-              
-             }
-
-             async function test() {
-                console.log('start timer');
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                console.log('after 1 second');
-                for (let index = 0; index < 1; index++) {
-                //const element = cars[index].drugName;
-               // console.log(cars);
-                for (let layer0 = 0; layer0 < cars.length; layer0++) {
-                          
-                         // console.log(cars[layer0]);
-                          for (let layer1 = 0; layer1 < cars[layer0].length; layer1++) {
-                           
-                           // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
-                            console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
-                            
-                          }
-
-                  
-                }
-                
-              }
-
-              for (let index_fam = 0; index_fam < 1; index_fam++) {
-                //const element = cars[index].drugName;
-               // console.log(cars);
-                for (let layer0_fam = 0; layer0_fam < cars.length; layer0_fam++) {
-                          
-                         // console.log(cars[layer0]);
-                          for (let layer1_fam = 0; layer1_fam < cars[layer0_fam].length; layer1_fam++) {
-                           
-                           // console.log(cars[layer0][layer1].firstName+" "+cars[layer0][layer1].drugName);
-                            console.log(cars[layer0_fam][layer1_fam].family);
-                            
-                          }
-
-                  
-                }
-                
-              }
-
-
-
-              }
-
-              test();
-
-             
-          
-        }
-      });
-                        
 
 
     var ctx2 = document.getElementById("chart-line").getContext("2d");
